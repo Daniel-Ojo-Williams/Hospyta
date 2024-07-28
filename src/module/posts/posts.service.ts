@@ -182,4 +182,39 @@ export class PostsService {
 
     await this.posts.delete({ id });
   }
+
+  async upVotePost(id: string) {
+    const post = await this.posts.findOne({
+      where: { id },
+    });
+
+    if (!post)
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Post not found',
+          status_code: HttpStatus.NOT_FOUND,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    await this.posts.increment({ id }, 'up_votes', 1);
+  }
+
+  async downVotePost(id: string) {
+    const post = await this.posts.findOne({
+      where: { id },
+    });
+
+    if (!post)
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Post not found',
+          status_code: HttpStatus.NOT_FOUND,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+
+    await this.posts.increment({ id }, 'down_votes', 1);
+  }
 }

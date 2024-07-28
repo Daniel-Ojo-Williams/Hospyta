@@ -114,4 +114,26 @@ export class PostsController {
       message: 'Deleted post successfully',
     };
   }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id/up-vote')
+  async upvotePost(@Param('id', ParseUUIDPipe) id: string) {
+    await this.postsService.upVotePost(id);
+
+    return {
+      success: true,
+      message: 'UpVoted post successfully',
+    };
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id/down-vote')
+  async downvotePost(@Param('id', ParseUUIDPipe) id: string) {
+    await this.postsService.downVotePost(id);
+
+    return {
+      success: true,
+      message: 'DownVoted post successfully',
+    };
+  }
 }
