@@ -13,6 +13,21 @@ export class UsersService {
   ) {}
 
   async register(createUserDto: CreateUserDto) {
+    // --| Check if account with email already exists
+    const accountExists = await this.users.findOneBy({
+      email: createUserDto.email,
+    });
+
+    if (accountExists)
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Account already exists',
+          status_code: HttpStatus.CONFLICT,
+        },
+        HttpStatus.CONFLICT,
+      );
+
     const user = this.users.create(createUserDto);
 
     return await this.users.save(user);
