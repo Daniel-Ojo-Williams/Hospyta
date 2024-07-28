@@ -6,14 +6,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { PostsModule } from './module/posts/posts.module';
 import { CategoryModule } from './module/category/category.module';
 import { CommentsModule } from './module/comments/comments.module';
-
+import 'dotenv/config';
 @Module({
   imports: [
     UsersModule,
     TypeOrmModule.forRoot(dataSourceOptions),
     JwtModule.register({
       global: true,
-      secret: 'secret',
+      secret: process.env.JWT_Secret,
       signOptions: { expiresIn: '1d' },
     }),
     PostsModule,
